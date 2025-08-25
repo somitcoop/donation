@@ -15,7 +15,7 @@
                     <h1>Donation Tax Receipt <span t-field="o.number" /></h1>
                     <h3>Donor:</h3>
                     <div
-                        t-field="o.partner_id"
+                        t-out="o.partner_id"
                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
                     />
                     <h3>Date: <span t-field="o.date" /></h3>
