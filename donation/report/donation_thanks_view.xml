@@ -10,10 +10,74 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.internal_layout">
                     <div class="page">
-                        <div
-                            t-field="o.partner_id"
-                            t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
-                        />
+                        <!-- Header with company logo if needed -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <img t-if="o.thanks_template_id.image" 
+                                     t-att-src="'/web/image/donation.thanks.template/%s/image' % o.thanks_template_id.id" 
+                                     style="max-height: 150px;" 
+                                     class="float-right"/>
+                            </div>
+                        </div>
+                        
+                        <!-- Donor Address -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <div
+                                    t-out="o.partner_id"
+                                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                                />
+                            </div>
+                        </div>
+                        
+                        <!-- Date -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <p class="text-right">
+                                    <span t-field="o.donation_date" t-options='{"format": "long"}'/>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Thanks Letter Content -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Thanks Letter</h3>
+                                
+                                <!-- Donation Details -->
+                                <p>
+                                    Dear <span t-field="o.partner_id.name"/>,
+                                </p>
+                                
+                                <p>
+                                    Thank you for your generous donation of 
+                                    <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    on <span t-field="o.donation_date"/>.
+                                </p>
+                                
+                                <!-- Custom text from template if available -->
+                                <div t-if="o.thanks_template_id.text">
+                                    <t t-out="o.thanks_template_id.text"/>
+                                </div>
+                                
+                                <!-- Default text if no custom template -->
+                                <div t-if="not o.thanks_template_id.text">
+                                    <p>
+                                        Your support makes a real difference and helps us continue our mission. 
+                                        We are deeply grateful for your generosity and trust in our organization.
+                                    </p>
+                                    
+                                    <p>
+                                        This donation will be put to good use and will help us achieve our goals.
+                                    </p>
+                                </div>
+                                
+                                <p class="mt-4">
+                                    With sincere gratitude,<br/>
+                                    <span t-field="o.company_id.name"/>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </t>
             </t>
